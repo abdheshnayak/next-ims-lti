@@ -1,0 +1,71 @@
+{
+  "name": "next-ims-lti",
+  "version": "0.0.9",
+  "description": "",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.js",
+  "scripts": {
+    "prepublish": "npm run lint && npm run _build && npm run _test",
+    "build": "npm run lint && npm run _build",
+    "_build": "babel src --out-dir lib --ignore '**/*.test.js'",
+    "test": "npm run lint && npm run _test",
+    "posttest": "cowsay Your tests all passed!",
+    "_test": "echo",
+    "test:watch": "jest --watch",
+    "lint": "eslint src"
+  },
+  "author": "Abdhesh Nayak",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abdheshnayak/next-ims-lti.git"
+  },
+  "keywords": [
+    "itm",
+    "lti",
+    "moodle",
+    "lrs",
+    "next",
+    "nextjs",
+    "ui",
+    "frontend"
+  ],
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "body-parser": "^1.19.2",
+    "ims-lti": "^3.0.2",
+    "next-cookie": "^2.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/eslint-parser": "^7.16.5",
+    "@babel/preset-env": "^7.16.8",
+    "@babel/preset-react": "^7.16.7",
+    "@madhouselabs/eslint-config-next": "^1.0.0",
+    "@madhouselabs/eslint-config-react": "^1.0.5",
+    "@madhouselabs/eslint-config-react-base": "^1.0.2",
+    "autoprefixer": "^10.4.2",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-node": "^0.3.6",
+    "eslint-import-resolver-webpack": "^0.13.2",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "pino-pretty": "^7.3.0",
+    "prettier": "^2.5.1",
+    "react": "^18.0.0"
+  }
+}
