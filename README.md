@@ -1,5 +1,11 @@
 # next-ims-lti
 
+## Installation
+
+```bash
+npm i next-ims-lti
+```
+
 ## Example
 
 ```jsx
