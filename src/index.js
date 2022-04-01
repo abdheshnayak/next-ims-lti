@@ -3,8 +3,6 @@ import lti from 'ims-lti';
 import bodyParser from 'body-parser';
 import { useCookie as getCookie } from 'next-cookie';
 
-require('@babel/polyfill');
-
 const setMiddleware = (req, res) => {
   return new Promise((resolve) => {
     // @ts-ignore
@@ -17,6 +15,17 @@ const setMiddleware = (req, res) => {
   });
 };
 
+const toBase64 = (str) => {
+  return Buffer.from(Buffer.from(str).toString('base64')).toString('base64');
+};
+
+const toNormalString = (str) => {
+  return Buffer.from(
+    Buffer.from(str, 'base64').toString(),
+    'base64'
+  ).toString();
+};
+
 const verifyLti = ({ ctx, request, key, secret, persist, cookieOptions }) => {
   return new Promise((resolve) => {
     // @ts-ignore
@@ -26,18 +35,20 @@ const verifyLti = ({ ctx, request, key, secret, persist, cookieOptions }) => {
       const cookie = getCookie(ctx);
       if (!isValid) {
         if (persist) {
-          cookie.set('ltiContext', JSON.stringify({}), {
-            maxAge: 0,
+          const myb = toBase64(JSON.stringify({ error: err }));
+          cookie.set('HEp8hAsCelpLI3EX', myb, {
+            maxAge: 1000 * 60 * 60 * 24 * 365,
             path: '/',
             ...cookieOptions,
           });
         }
 
-        // console.error('not valid');
-        resolve({});
+        // console.error(`not valid: ${err}`);
+        resolve({ error: err });
       } else {
         if (persist) {
-          cookie.set('ltiContext', JSON.stringify(moodleData.body), {
+          const myb = toBase64(JSON.stringify(moodleData.body));
+          cookie.set('HEp8hAsCelpLI3EX', myb, {
             maxAge: 1000 * 60 * 60 * 24 * 365,
             path: '/',
             ...cookieOptions,
@@ -74,12 +85,20 @@ const getLtiContext = async ({
 
   if (persist) {
     const cookie = getCookie(ctx);
-    const ltiContext = cookie.get('ltiContext');
-    return ltiContext || {};
+    try {
+      const ltiContext = JSON.parse(
+        toNormalString(cookie.get('HEp8hAsCelpLI3EX'))
+      );
+
+      return ltiContext || {};
+    } catch (e) {
+      return { error: e };
+    }
   }
 
   const cookie = getCookie(ctx);
-  cookie.set('ltiContext', JSON.stringify({}), {
+  const myb = toBase64(JSON.stringify({}));
+  cookie.set('HEp8hAsCelpLI3EX', myb, {
     maxAge: 0,
     path: '/',
     ...cookieOptions,
