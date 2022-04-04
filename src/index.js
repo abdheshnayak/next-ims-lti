@@ -16,14 +16,26 @@ const setMiddleware = (req, res) => {
 };
 
 const toBase64 = (str) => {
-  return Buffer.from(Buffer.from(str).toString('base64')).toString('base64');
+  let _str;
+  try {
+    _str = Buffer.from(Buffer.from(str).toString('base64')).toString('base64');
+    return _str;
+  } catch (e) {
+    return toBase64(JSON.stringify({ error: e }));
+  }
 };
 
 const toNormalString = (str) => {
-  return Buffer.from(
-    Buffer.from(str, 'base64').toString(),
-    'base64'
-  ).toString();
+  let _str;
+  try {
+    _str = Buffer.from(
+      Buffer.from(str, 'base64').toString(),
+      'base64'
+    ).toString();
+    return _str;
+  } catch (e) {
+    return JSON.stringify({ error: e });
+  }
 };
 
 const verifyLti = ({ ctx, request, key, secret, persist, cookieOptions }) => {
